@@ -55,6 +55,17 @@ def test_dictionary_update_and_remove():
     
     del inventory["bananas"]
     assert "bananas" not in inventory
+#Second meaningful commit.
+def test_dictionary_comprehension():
+    """Test creating dictionaries dynamically using dictionary comprehensions."""
+    original_prices = {"apple": 2.00, "banana": 1.00, "orange": 1.50}
+    
+    # Apply a 10% discount to all items using a dictionary comprehension
+    discounted_prices = {item: price * 0.9 for item, price in original_prices.items()}
+    
+    assert discounted_prices["apple"] == 1.80
+    assert discounted_prices["banana"] == 0.90
+    assert discounted_prices["orange"] == 1.35
 #The original test with the file.
 def test_dictionary():
     """Dictionary"""
