@@ -407,3 +407,41 @@ def test_list_comprehension_extras():
     assert max(scores) == 92
     assert min(scores) == 64
     assert sum(scores) / len(scores) == 79.75
+
+    def test_list_aliasing_and_shallow_copy():
+    """Aliasing vs. copying: assignment shares a list, copies share nested items."""
+
+    # Assignment does not copy a list; both names refer to the same object.
+    original = [1, 2, 3]
+    alias = original
+    alias.append(4)
+    assert original == [1, 2, 3, 4]
+    assert alias is original
+
+    # A slice (or list.copy()) creates a new, independent outer list.
+    clone = original[:]
+    clone.append(5)
+    assert original == [1, 2, 3, 4]
+    assert clone == [1, 2, 3, 4, 5]
+    assert clone is not original
+
+    # ...but the copy is shallow: nested lists are still shared.
+    nested = [[1, 2], [3, 4]]
+    shallow = nested.copy()
+    shallow[0].append(99)
+    assert nested == [[1, 2, 99], [3, 4]]
+
+    # Build independent nested lists with a comprehension (or copy.deepcopy()).
+    independent = [row[:] for row in nested]
+    independent[0].append(100)
+    assert nested == [[1, 2, 99], [3, 4]]
+    assert independent == [[1, 2, 99, 100], [3, 4]]
+
+    # Beware: multiplying a list of lists repeats references to the same inner list.
+    shared_rows = [[0]] * 3
+    shared_rows[0].append(1)
+    assert shared_rows == [[0, 1], [0, 1], [0, 1]]
+
+    separate_rows = [[0] for _ in range(3)]
+    separate_rows[0].append(1)
+    assert separate_rows == [[0, 1], [0], [0]]
