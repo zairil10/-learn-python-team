@@ -121,3 +121,43 @@ def test_function_definition():
     greet_with_closure = compose_greet_func_with_closure('John')
 
     assert greet_with_closure() == 'Hello there, John!'
+
+    # Parameters can have default values, so the caller may omit them. Arguments can also be
+    # passed by keyword, in any order. A function can return several values as a tuple.
+
+    def describe_rectangle(width, height=1):
+        area = width * height
+        perimeter = 2 * (width + height)
+        return area, perimeter
+
+    assert describe_rectangle(5) == (5, 12)                   # height uses its default value 1
+    assert describe_rectangle(4, 3) == (12, 14)               # positional arguments
+    assert describe_rectangle(height=2, width=6) == (12, 16)  # keyword arguments, any order
+
+    rectangle_area, rectangle_perimeter = describe_rectangle(2, 2)  # unpack the returned tuple
+    assert rectangle_area == 4
+    assert rectangle_perimeter == 8
+
+    # A function can check its arguments and raise an exception when they are invalid,
+    # instead of returning a wrong result.
+
+    def safe_divide(dividend, divisor):
+        if not isinstance(dividend, (int, float)) or not isinstance(divisor, (int, float)):
+            raise TypeError('Both arguments must be numbers')
+        if divisor == 0:
+            raise ValueError('Cannot divide by zero')
+        return dividend / divisor
+
+    assert safe_divide(10, 2) == 5
+
+    try:
+        safe_divide(10, 0)
+        assert False, 'Expected ValueError'
+    except ValueError as error:
+        assert str(error) == 'Cannot divide by zero'
+
+    try:
+        safe_divide('10', 2)
+        assert False, 'Expected TypeError'
+    except TypeError:
+        pass
