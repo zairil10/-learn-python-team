@@ -134,6 +134,10 @@ def test_function_definition():
     assert describe_rectangle(4, 3) == (12, 14)               # positional arguments
     assert describe_rectangle(height=2, width=6) == (12, 16)  # keyword arguments, any order
 
+    print('describe_rectangle(5) ans:', describe_rectangle(5))
+    print('describe_rectangle(4, 3) ans:', describe_rectangle(4, 3))
+    print('describe_rectangle(height=2, width=6) ans:', describe_rectangle(height=2, width=6))
+
     rectangle_area, rectangle_perimeter = describe_rectangle(2, 2)  # unpack the returned tuple
     assert rectangle_area == 4
     assert rectangle_perimeter == 8
@@ -149,15 +153,23 @@ def test_function_definition():
         return dividend / divisor
 
     assert safe_divide(10, 2) == 5
+    print('safe_divide(10, 2) ans:', safe_divide(10, 2))
 
     try:
         safe_divide(10, 0)
         assert False, 'Expected ValueError'
     except ValueError as error:
         assert str(error) == 'Cannot divide by zero'
+        print('safe_divide(10, 0) ans: ValueError:', error)
 
     try:
         safe_divide('10', 2)
         assert False, 'Expected TypeError'
-    except TypeError:
-        pass
+    except TypeError as error:
+        print("safe_divide('10', 2) ans: TypeError:", error)
+
+
+if __name__ == '__main__':
+    print('fibonacci_function_example(300) ans:', fibonacci_function_example(300))
+    test_function_definition()
+    print('All checks passed')
